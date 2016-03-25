@@ -30,7 +30,7 @@ then you can use @ZValue annotation to inject Zookepper node value in your compo
 
 ```
 @ZValue(path = "/config/path")
-    public void setValue(String value) {
+public void setValue(String value) {
     this.value = value;
 }
 ```
