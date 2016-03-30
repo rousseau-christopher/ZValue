@@ -10,7 +10,7 @@
         </encoder>
 	</appender>
 
-	<logger name="org.springframework.zvalue" level="DEBUG" />
+	<logger name="org.crousseau.spring.zvalue" level="DEBUG" />
 
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />

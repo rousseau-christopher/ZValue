@@ -1,4 +1,4 @@
-package org.springframework.zvalue;
+package org.crousseau.spring.zvalue;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -7,7 +7,6 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.test.TestingServer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.ZValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,12 +33,12 @@ public class ZValueConfigurationIT {
         assertThat(myComponent.getAnotherProperty()).isEqualTo("property");
 
         // When
-        curatorFramework.setData().forPath("/config/path", "myValue".getBytes());
+        curatorFramework.setData().forPath("/config/path", "changedValue".getBytes());
         curatorFramework.setData().forPath("/config/anotherProperty", "changedProperty".getBytes());
         Thread.sleep(50);
         // Then
 
-        assertThat(myComponent.getValue()).isEqualTo("myValue");
+        assertThat(myComponent.getValue()).isEqualTo("changedValue");
         assertThat(myComponent.getAnotherProperty()).isEqualTo("changedProperty");
     }
 

@@ -1,4 +1,4 @@
-package org.springframework.zvalue;
+package org.crousseau.spring.zvalue;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -10,7 +10,6 @@ import javax.inject.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ZValue;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class ZValueBeanPostProcessor implements BeanPostProcessor {
     @Inject
     private Provider<ZValueUpdater> zValueUpdaterProvider;
 
-    private final List<ZValueUpdater> zValueUpdaters = new ArrayList<ZValueUpdater>();
+    private final List<ZValueUpdater> zValueUpdaters = new ArrayList<>();
 
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;

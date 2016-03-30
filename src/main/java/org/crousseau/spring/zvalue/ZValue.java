@@ -1,4 +1,4 @@
-package org.springframework;
+package org.crousseau.spring.zvalue;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

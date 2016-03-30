@@ -1,4 +1,4 @@
-package org.springframework.zvalue;
+package org.crousseau.spring.zvalue;
 
 import java.lang.reflect.Method;
 
