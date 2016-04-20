@@ -10,7 +10,7 @@ import java.util.Map;
 @Component
 public class DeserializerFactory {
 
-    Map<String, Deserializer> deserializers = new HashMap<>();
+    private Map<String, Deserializer> deserializers = new HashMap<>();
 
     @Autowired
     public DeserializerFactory(List<Deserializer> deserializerList) {
