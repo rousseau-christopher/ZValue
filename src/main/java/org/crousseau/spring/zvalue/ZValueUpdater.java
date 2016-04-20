@@ -1,12 +1,15 @@
 package org.crousseau.spring.zvalue;
 
-import java.lang.reflect.Method;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.inject.Inject;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.NodeCacheListener;
+import org.crousseau.spring.zvalue.deserialiser.Deserializer;
+import org.crousseau.spring.zvalue.deserialiser.DeserializerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -20,21 +23,30 @@ public class ZValueUpdater {
     @Inject
     private CuratorFramework curatorFramework;
 
-    ZValueUpdater watch(final Object bean, final Method method, String path) {
+    @Inject
+    private DeserializerFactory deserializerFactory;
+
+    ZValueUpdater watch(final TargetMethod targetMethod, String path) {
         try {
             final NodeCache nodeCache = new NodeCache(curatorFramework, path);
             nodeCache.getListenable().addListener(new NodeCacheListener() {
                 public void nodeChanged() throws Exception {
-                    String data = new String(nodeCache.getCurrentData().getData(), "UTF8");
-                    logger.debug("Node Changed {} : {}", nodeCache.getCurrentData().getPath(), data);
-                    method.invoke(bean, data);
+                    setValue(targetMethod, nodeCache);
                 }
             });
             nodeCache.start(true);
-            method.invoke(bean, new String(nodeCache.getCurrentData().getData(), "UTF8"));
+            setValue(targetMethod, nodeCache);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return this;
+    }
+
+    private void setValue(TargetMethod targetMethod, NodeCache nodeCache) throws IllegalAccessException, InvocationTargetException, UnsupportedEncodingException {
+        logger.debug("Node Changed {} : {}", nodeCache.getCurrentData().getPath(), new String(nodeCache.getCurrentData().getData(), targetMethod.getZValue().charset()));
+
+        Deserializer deserializer = deserializerFactory.getForSourceType(targetMethod.getZValue().type());
+        Object data = deserializer.deserialize(nodeCache.getCurrentData().getData(), targetMethod.getType(), targetMethod.getZValue().charset());
+        targetMethod.call(data);
     }
 }
