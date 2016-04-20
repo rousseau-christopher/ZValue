@@ -38,5 +38,5 @@ public void setValue(String value) {
 ## Evolution
 Currently @Zvalue support only Injection of value as String only. Futur implemenation will add:
 
-- Deserialization of json/xml into Pojo
+- Deserialization of json/xml into Pojo : WIP (need to clean/refactor the code
 - spring boot for autoconfiguration
