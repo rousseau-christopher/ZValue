@@ -11,5 +11,5 @@ public @interface ZValue {
     String path();
 
     String type() default "String";
-    String charset() default "UTF8";
+    String charset() default "UTF-8";
 }
