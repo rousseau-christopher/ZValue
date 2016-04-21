@@ -14,7 +14,7 @@ public class GsonDeserializer implements Deserializer {
         try {
             return gson.fromJson(new InputStreamReader(new ByteArrayInputStream(input), charset), targetClass);
         } catch (UnsupportedEncodingException e) {
-            return new RuntimeException(e);
+            return new IllegalArgumentException(e);
         }
     }
 

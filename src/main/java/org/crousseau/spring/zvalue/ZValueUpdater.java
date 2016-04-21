@@ -26,9 +26,9 @@ public class ZValueUpdater {
     @Inject
     private DeserializerFactory deserializerFactory;
 
-    ZValueUpdater watch(final TargetMethod targetMethod, String path) {
+    ZValueUpdater watch(final TargetMethod targetMethod) {
         try {
-            final NodeCache nodeCache = new NodeCache(curatorFramework, path);
+            final NodeCache nodeCache = new NodeCache(curatorFramework, targetMethod.getZValue().path());
             nodeCache.getListenable().addListener(new NodeCacheListener() {
                 public void nodeChanged() throws Exception {
                     setValue(targetMethod, nodeCache);
@@ -44,9 +44,11 @@ public class ZValueUpdater {
 
     private void setValue(TargetMethod targetMethod, NodeCache nodeCache) throws IllegalAccessException, InvocationTargetException, UnsupportedEncodingException {
         logger.debug("Node Changed {} : {}", nodeCache.getCurrentData().getPath(), new String(nodeCache.getCurrentData().getData(), targetMethod.getZValue().charset()));
+        targetMethod.call(getDeserializedObjectFromNode(targetMethod, nodeCache));
+    }
 
+    private Object getDeserializedObjectFromNode(TargetMethod targetMethod, NodeCache nodeCache) {
         Deserializer deserializer = deserializerFactory.getForSourceType(targetMethod.getZValue().type());
-        Object data = deserializer.deserialize(nodeCache.getCurrentData().getData(), targetMethod.getType(), targetMethod.getZValue().charset());
-        targetMethod.call(data);
+        return deserializer.deserialize(nodeCache.getCurrentData().getData(), targetMethod.getType(), targetMethod.getZValue().charset());
     }
 }

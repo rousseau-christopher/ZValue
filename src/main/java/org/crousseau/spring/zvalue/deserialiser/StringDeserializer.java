@@ -11,7 +11,7 @@ public class StringDeserializer implements Deserializer {
         try {
             return new String(input, charset);
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 

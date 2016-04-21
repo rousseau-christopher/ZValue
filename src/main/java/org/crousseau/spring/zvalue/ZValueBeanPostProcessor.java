@@ -11,7 +11,6 @@ import javax.inject.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +43,7 @@ public class ZValueBeanPostProcessor implements BeanPostProcessor {
                 logger.debug("@Zvalue found on : {}.{}", beanName, method.getName());
                 TargetMethod targetMethod = new TargetMethod(bean, method, (ZValue) annotation);
                 zValueUpdaters.add(
-                        zValueUpdaterProvider.get().watch(targetMethod, ((ZValue) annotation).path())
+                        zValueUpdaterProvider.get().watch(targetMethod)
                 );
             }
         }
