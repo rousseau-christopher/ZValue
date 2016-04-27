@@ -1,4 +1,4 @@
-package org.crousseau.spring.zvalue;
+package net.lamad.spring.dvalue.zookeeper;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package org.crousseau.spring.zvalue.deserialiser;
+package net.lamad.spring.dvalue.zookeeper.deserialiser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

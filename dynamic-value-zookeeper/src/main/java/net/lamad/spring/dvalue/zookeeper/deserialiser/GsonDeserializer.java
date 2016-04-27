@@ -1,4 +1,4 @@
-package org.crousseau.spring.zvalue.deserialiser;
+package net.lamad.spring.dvalue.zookeeper.deserialiser;
 
 import com.google.gson.Gson;
 

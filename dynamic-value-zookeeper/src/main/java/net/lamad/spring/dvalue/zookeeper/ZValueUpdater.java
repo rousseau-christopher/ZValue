@@ -1,15 +1,15 @@
-package org.crousseau.spring.zvalue;
+package net.lamad.spring.dvalue.zookeeper;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.inject.Inject;
 
+import net.lamad.spring.dvalue.zookeeper.deserialiser.Deserializer;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.NodeCacheListener;
-import org.crousseau.spring.zvalue.deserialiser.Deserializer;
-import org.crousseau.spring.zvalue.deserialiser.DeserializerFactory;
+import net.lamad.spring.dvalue.zookeeper.deserialiser.DeserializerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
