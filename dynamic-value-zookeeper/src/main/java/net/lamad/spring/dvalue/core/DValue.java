@@ -1,4 +1,4 @@
-package net.lamad.spring.dvalue.zookeeper;
+package net.lamad.spring.dvalue.core;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ZValue {
+public @interface DValue {
     String path();
 
     String type() default "String";

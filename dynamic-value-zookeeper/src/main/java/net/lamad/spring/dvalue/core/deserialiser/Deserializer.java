@@ -1,4 +1,4 @@
-package net.lamad.spring.dvalue.zookeeper.deserialiser;
+package net.lamad.spring.dvalue.core.deserialiser;
 
 public interface Deserializer {
     Object deserialize(byte[] input, Class targetClass, String charset);

@@ -2,8 +2,10 @@ package net.lamad.spring.dvalue.zookeeper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.lamad.spring.dvalue.zookeeper.deserialiser.Deserializer;
-import net.lamad.spring.dvalue.zookeeper.deserialiser.GsonDeserializer;
+import net.lamad.spring.dvalue.core.DValue;
+import net.lamad.spring.dvalue.core.DValueConfiguration;
+import net.lamad.spring.dvalue.core.deserialiser.Deserializer;
+import net.lamad.spring.dvalue.core.deserialiser.GsonDeserializer;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -19,8 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ZValueConfigurationIT.TestConfiguration.class)
-public class ZValueConfigurationIT {
+@ContextConfiguration(classes = DValueConfigurationIT.TestConfiguration.class)
+public class DValueConfigurationIT {
 
     @Autowired
     private MyComponent myComponent;
@@ -68,7 +70,7 @@ public class ZValueConfigurationIT {
     }
 
     @Configuration
-    @Import(ZValueConfiguration.class)
+    @Import(DValueConfiguration.class)
     public static class TestConfiguration {
 
         @Bean
@@ -104,7 +106,7 @@ public class ZValueConfigurationIT {
         private String anotherProperty;
         private MyParam myParam;
 
-        @ZValue(path = "/config/path")
+        @DValue(path = "/config/path")
         public void setValue(String value) {
             this.value = value;
         }
@@ -113,7 +115,7 @@ public class ZValueConfigurationIT {
             return value;
         }
 
-        @ZValue(path = "/config/anotherProperty")
+        @DValue(path = "/config/anotherProperty")
         public void setAnotherProperty(String anotherValue) {
             this.anotherProperty = anotherValue;
         }
@@ -122,7 +124,7 @@ public class ZValueConfigurationIT {
             return anotherProperty;
         }
 
-        @ZValue(path = "/config/json", type = "json")
+        @DValue(path = "/config/json", type = "json")
         public void setMyParam(MyParam myParam) {
             this.myParam = myParam;
         }

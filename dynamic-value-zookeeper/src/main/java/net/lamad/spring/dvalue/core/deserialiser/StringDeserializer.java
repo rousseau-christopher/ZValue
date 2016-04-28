@@ -1,4 +1,4 @@
-package net.lamad.spring.dvalue.zookeeper.deserialiser;
+package net.lamad.spring.dvalue.core.deserialiser;
 
 import org.springframework.stereotype.Component;
 

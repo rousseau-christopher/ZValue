@@ -1,4 +1,4 @@
-package net.lamad.spring.dvalue.zookeeper;
+package net.lamad.spring.dvalue.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -15,20 +15,20 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ZValueBeanPostProcessor implements BeanPostProcessor {
-    private final Logger logger = LoggerFactory.getLogger(ZValueBeanPostProcessor.class);
+public class DValueBeanPostProcessor implements BeanPostProcessor {
+    private final Logger logger = LoggerFactory.getLogger(DValueBeanPostProcessor.class);
 
     @Inject
-    private Provider<ZValueUpdater> zValueUpdaterProvider;
+    private Provider<DValueUpdater> dValueUpdaterProvider;
 
-    private final List<ZValueUpdater> zValueUpdaters = new ArrayList<>();
+    private final List<DValueUpdater> dValueUpdaters = new ArrayList<>();
 
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
 
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        logger.debug("Process bean {} for @ZValue Annotation", beanName);
+        logger.debug("Process bean {} for @DValue Annotation", beanName);
         Method[] methods = bean.getClass().getMethods();
         for (Method method: methods) {
             searchAnnotation(bean, method, beanName, bean.getClass());
@@ -39,11 +39,11 @@ public class ZValueBeanPostProcessor implements BeanPostProcessor {
     private void searchAnnotation(Object bean, Method method, String beanName, Class type) {
         Annotation[] annotations = method.getDeclaredAnnotations();
         for (Annotation annotation: annotations) {
-            if (annotation instanceof ZValue) {
+            if (annotation instanceof DValue) {
                 logger.debug("@Zvalue found on : {}.{}", beanName, method.getName());
-                TargetMethod targetMethod = new TargetMethod(bean, method, (ZValue) annotation);
-                zValueUpdaters.add(
-                        zValueUpdaterProvider.get().watch(targetMethod)
+                TargetMethod targetMethod = new TargetMethod(bean, method, (DValue) annotation);
+                dValueUpdaters.add(
+                        dValueUpdaterProvider.get().watch(targetMethod)
                 );
             }
         }

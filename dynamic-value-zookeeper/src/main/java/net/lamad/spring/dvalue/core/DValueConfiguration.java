@@ -1,9 +1,9 @@
-package net.lamad.spring.dvalue.zookeeper;
+package net.lamad.spring.dvalue.core;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "org.crousseau.spring.zvalue")
-public class ZValueConfiguration {
+@ComponentScan(basePackages = "net.lamad.spring.dvalue")
+public class DValueConfiguration {
 }

@@ -5,11 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.inject.Inject;
 
-import net.lamad.spring.dvalue.zookeeper.deserialiser.Deserializer;
+import net.lamad.spring.dvalue.core.DValueUpdater;
+import net.lamad.spring.dvalue.core.TargetMethod;
+import net.lamad.spring.dvalue.core.deserialiser.Deserializer;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.NodeCacheListener;
-import net.lamad.spring.dvalue.zookeeper.deserialiser.DeserializerFactory;
+import net.lamad.spring.dvalue.core.deserialiser.DeserializerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -17,8 +19,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class ZValueUpdater {
-    private final Logger logger = LoggerFactory.getLogger(ZValueUpdater.class);
+public class DValueUpdaterZookeeper implements DValueUpdater {
+    private final Logger logger = LoggerFactory.getLogger(DValueUpdaterZookeeper.class);
 
     @Inject
     private CuratorFramework curatorFramework;
@@ -26,8 +28,12 @@ public class ZValueUpdater {
     @Inject
     private DeserializerFactory deserializerFactory;
 
-    ZValueUpdater watch(final TargetMethod targetMethod) {
+    private Deserializer deserializer;
+
+    @Override
+    public DValueUpdater watch(final TargetMethod targetMethod) {
         try {
+            deserializer = deserializerFactory.getForSourceType(targetMethod.getZValue().type());
             final NodeCache nodeCache = new NodeCache(curatorFramework, targetMethod.getAsFilePath());
             nodeCache.getListenable().addListener(new NodeCacheListener() {
                 public void nodeChanged() throws Exception {
@@ -50,7 +56,6 @@ public class ZValueUpdater {
     }
 
     private Object getDeserializedObjectFromNode(TargetMethod targetMethod, NodeCache nodeCache) {
-        Deserializer deserializer = deserializerFactory.getForSourceType(targetMethod.getZValue().type());
         return deserializer.deserialize(nodeCache.getCurrentData().getData(), targetMethod.getType(), targetMethod.getZValue().charset());
     }
 }
