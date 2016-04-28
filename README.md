@@ -1,14 +1,21 @@
-## Zookeeper Value
+## Dynamic Value
 
-This library add the possible to use Zookeeper to inject configuration in component, the same way we use @Value to inject properties (or Envirronement variable) in component.
-@ZValue register a watcher and update the component as soon is equivalent ZNode is updated in zookeeper.
+This library add the possible to dynamically inject configuration value in component, the same way we use @Value to inject properties (or Environment variable) in component.
+@DValue register a watcher and update the component as soon as it change in the source repository
 
 Using this pattern you can dynamically update your configuration without restarting you server.
 
-The application use Curator library
+# Zookeeper implementation
+Implemented, The application use Curator library
+
+# File
+Work in progress
+
+# Consul
+Need to be implemented
 
 ## Usage
-Import Zvalue Configuration in your Spring configuration :
+Import Dvalue Configuration in your Spring configuration :
 
 ```
 @Import(org.springframework.zvalue.ZValueConfiguration.class)

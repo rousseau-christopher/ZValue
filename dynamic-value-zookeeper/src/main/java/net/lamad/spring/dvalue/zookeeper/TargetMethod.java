@@ -25,4 +25,12 @@ class TargetMethod {
     ZValue getZValue() {
         return zValue;
     }
+
+    String getAsFilePath() {
+        String path = zValue.path().replace('.', '/');
+        if (path.charAt(0) != '/') {
+            path = '/' + path;
+        }
+        return path;
+    }
 }

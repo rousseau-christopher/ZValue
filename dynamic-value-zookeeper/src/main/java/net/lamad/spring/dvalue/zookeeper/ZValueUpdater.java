@@ -28,7 +28,7 @@ public class ZValueUpdater {
 
     ZValueUpdater watch(final TargetMethod targetMethod) {
         try {
-            final NodeCache nodeCache = new NodeCache(curatorFramework, targetMethod.getZValue().path());
+            final NodeCache nodeCache = new NodeCache(curatorFramework, targetMethod.getAsFilePath());
             nodeCache.getListenable().addListener(new NodeCacheListener() {
                 public void nodeChanged() throws Exception {
                     setValue(targetMethod, nodeCache);
@@ -43,7 +43,9 @@ public class ZValueUpdater {
     }
 
     private void setValue(TargetMethod targetMethod, NodeCache nodeCache) throws IllegalAccessException, InvocationTargetException, UnsupportedEncodingException {
-        logger.debug("Node Changed {} : {}", nodeCache.getCurrentData().getPath(), new String(nodeCache.getCurrentData().getData(), targetMethod.getZValue().charset()));
+        if (logger.isDebugEnabled()) {
+            logger.debug("Node Changed {} : {}", nodeCache.getCurrentData().getPath(), new String(nodeCache.getCurrentData().getData(), targetMethod.getZValue().charset()));
+        }
         targetMethod.call(getDeserializedObjectFromNode(targetMethod, nodeCache));
     }
 
