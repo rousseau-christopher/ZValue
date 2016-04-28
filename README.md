@@ -18,7 +18,7 @@ Need to be implemented
 Import Dvalue Configuration in your Spring configuration :
 
 ```
-@Import(org.springframework.zvalue.ZValueConfiguration.class)
+@Import(net.lamad.spring.dvalue.zookeeper.ZValueConfiguration.class)
 ```
 
 Your context must contain a bean of type org.apache.curator.framework.CuratorFramework to work.
