@@ -21,8 +21,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = DValueConfigurationIT.TestConfiguration.class)
-public class DValueConfigurationIT {
+@ContextConfiguration(classes = ZookeeperIT.TestConfiguration.class)
+public class ZookeeperIT {
 
     @Autowired
     private MyComponent myComponent;

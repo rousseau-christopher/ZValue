@@ -14,7 +14,7 @@ public class TargetMethod {
         this.dValue = dValue;
     }
 
-    public Class getType() {
+    public Class getParameterType() {
         return method.getParameterTypes()[0];
     }
 
@@ -22,7 +22,7 @@ public class TargetMethod {
         method.invoke(bean, value);
     }
 
-    public DValue getZValue() {
+    public DValue getDValueAnnotation() {
         return dValue;
     }
 
@@ -30,6 +30,14 @@ public class TargetMethod {
         String path = dValue.path().replace('.', '/');
         if (path.charAt(0) != '/') {
             path = '/' + path;
+        }
+        return path;
+    }
+
+    public String getAsPropertyPath() {
+        String path = dValue.path().replace('/', '.');
+        if (path.charAt(0) == '.') {
+            path = path.substring(1);
         }
         return path;
     }

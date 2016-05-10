@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.inject.Inject;
 
-import net.lamad.spring.dvalue.core.DValueUpdater;
 import net.lamad.spring.dvalue.core.TargetMethod;
 import net.lamad.spring.dvalue.core.deserialiser.Deserializer;
 import org.apache.curator.framework.CuratorFramework;
@@ -19,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class DValueUpdaterZookeeper implements DValueUpdater {
-    private final Logger logger = LoggerFactory.getLogger(DValueUpdaterZookeeper.class);
+public class ZookeeperValueUpdater {
+    private final Logger logger = LoggerFactory.getLogger(ZookeeperValueUpdater.class);
 
     @Inject
     private CuratorFramework curatorFramework;
@@ -30,10 +29,9 @@ public class DValueUpdaterZookeeper implements DValueUpdater {
 
     private Deserializer deserializer;
 
-    @Override
-    public DValueUpdater watch(final TargetMethod targetMethod) {
+    public ZookeeperValueUpdater watch(final TargetMethod targetMethod) {
         try {
-            deserializer = deserializerFactory.getForSourceType(targetMethod.getZValue().type());
+            deserializer = deserializerFactory.getForSourceType(targetMethod.getDValueAnnotation().type());
             final NodeCache nodeCache = new NodeCache(curatorFramework, targetMethod.getAsFilePath());
             nodeCache.getListenable().addListener(new NodeCacheListener() {
                 public void nodeChanged() throws Exception {
@@ -50,12 +48,12 @@ public class DValueUpdaterZookeeper implements DValueUpdater {
 
     private void setValue(TargetMethod targetMethod, NodeCache nodeCache) throws IllegalAccessException, InvocationTargetException, UnsupportedEncodingException {
         if (logger.isDebugEnabled()) {
-            logger.debug("Node Changed {} : {}", nodeCache.getCurrentData().getPath(), new String(nodeCache.getCurrentData().getData(), targetMethod.getZValue().charset()));
+            logger.debug("Node Changed {} : {}", nodeCache.getCurrentData().getPath(), new String(nodeCache.getCurrentData().getData(), targetMethod.getDValueAnnotation().charset()));
         }
         targetMethod.call(getDeserializedObjectFromNode(targetMethod, nodeCache));
     }
 
     private Object getDeserializedObjectFromNode(TargetMethod targetMethod, NodeCache nodeCache) {
-        return deserializer.deserialize(nodeCache.getCurrentData().getData(), targetMethod.getType(), targetMethod.getZValue().charset());
+        return deserializer.deserialize(nodeCache.getCurrentData().getData(), targetMethod.getParameterType(), targetMethod.getDValueAnnotation().charset());
     }
 }
